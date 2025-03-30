@@ -15,5 +15,6 @@ import { UsersModule } from '../users/users.module';
 		AuthModule,
 		UsersModule,
 	],
+	exports: [KeysService],
 })
 export class KeysModule {}

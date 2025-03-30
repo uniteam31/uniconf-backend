@@ -2,14 +2,14 @@ import { Body, Controller, Post, UseGuards, Request, Get } from '@nestjs/common'
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../users/dto/create-user-dto';
 import { LoginDto } from './dto/login-dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAdminGuard } from './jwt-admin.guard';
 import { IAuthenticatedRequest } from './types/authenticated-request.interface';
 
 @Controller('auth')
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
-	@UseGuards(JwtAuthGuard)
+	@UseGuards(JwtAdminGuard)
 	@Get()
 	init(@Request() req: IAuthenticatedRequest) {
 		const userID = req.user._id;
@@ -22,7 +22,7 @@ export class AuthController {
 	}
 
 	// TODO: remove comm
-	// @UseGuards(JwtAuthGuard)
+	// @UseGuards(JwtAdminGuard)
 	@Post('/signup')
 	registration(@Body() userDto: CreateUserDto) {
 		return this.authService.registration(userDto);
