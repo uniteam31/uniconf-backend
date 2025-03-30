@@ -3,7 +3,6 @@ import {
 	Controller,
 	Get,
 	Put,
-	Query,
 	Request,
 	UseGuards,
 	UsePipes,

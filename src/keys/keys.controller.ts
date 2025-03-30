@@ -15,7 +15,6 @@ import { CreateKeyDto } from './dto/create-key-dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IAuthenticatedRequest } from '../auth/types/authenticated-request.interface';
 import { UpdateKeyDto } from './dto/update-key-dto';
-import { Types } from 'mongoose';
 
 @UseGuards(JwtAuthGuard)
 @Controller('keys')
@@ -35,7 +34,7 @@ export class KeysController {
 	}
 
 	@Get(':name')
-	getKey(@Param('name') keyName: string, @Request() req: IAuthenticatedRequest) {
+	getKey(@Param('name') keyName: string) {
 		return this.keysService.getKey(keyName);
 	}
 

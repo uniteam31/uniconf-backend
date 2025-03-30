@@ -1,8 +1,4 @@
-import {
-	BadRequestException,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcryptjs';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './user.schema';
@@ -12,9 +8,7 @@ import { UpdateUserPersonalDataDto } from './dto/update-user-personal-data-dto';
 
 @Injectable()
 export class UsersService {
-	constructor(
-		@InjectModel(User.name) private userModel: Model<User>,
-	) {}
+	constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
 	async createUser(createUserDto: CreateUserDto): Promise<User> {
 		return await this.userModel.create({ ...createUserDto });
@@ -50,9 +44,7 @@ export class UsersService {
 			});
 
 			if (candidate?._id.toString() !== userID.toString()) {
-				throw new BadRequestException(
-					'Пользователь с таким именем пользователя уже существует'
-				);
+				throw new BadRequestException('Пользователь с таким именем пользователя уже существует');
 			}
 		}
 
@@ -68,9 +60,7 @@ export class UsersService {
 			.select('_id username publicName');
 
 		if (!updatedPersonalData) {
-			throw new NotFoundException(
-				'Такого пользователя нет или у вас нет прав для редактирования',
-			);
+			throw new NotFoundException('Такого пользователя нет или у вас нет прав для редактирования');
 		}
 
 		return updatedPersonalData;
