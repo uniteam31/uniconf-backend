@@ -9,12 +9,12 @@ import {
 	ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAdminGuard } from '../auth/jwt-admin.guard';
 import { IAuthenticatedRequest } from '../auth/types/authenticated-request.interface';
 import { formatResponse } from '../common/utils/response.util';
 import { UpdateUserPersonalDataDto } from './dto/update-user-personal-data-dto';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAdminGuard)
 @Controller('users')
 export class UsersController {
 	constructor(private usersService: UsersService) {}

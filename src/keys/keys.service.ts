@@ -76,7 +76,7 @@ export class KeysService {
 			});
 
 		if (!updatedKey) {
-			throw new NotFoundException('Ключ не найден или у вас нет прав для его редактирования');
+			throw new NotFoundException('У вас нет прав для редактирования этого ключа');
 		}
 
 		return formatResponse<Key>(updatedKey, 'Ключ успешно обновлен');
@@ -89,7 +89,7 @@ export class KeysService {
 		});
 
 		if (!deletedKey) {
-			throw new NotFoundException('Ключ не найден или у вас нет прав для его удаления');
+			throw new NotFoundException('У вас нет прав для удаления этого ключа');
 		}
 
 		return formatResponse(null, 'Ключ удален');
