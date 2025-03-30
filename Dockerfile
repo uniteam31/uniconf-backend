@@ -2,7 +2,7 @@ FROM --platform=linux/amd64 node:22
 
 # При деплое ОБЯЗАТЕЛЬНО указывать все ENV через Jenkins
 # Ставится в pipeline на Jenkins
-ARG BRANCH=master
+ARG BRANCH=main
 
 RUN apt -yqq update \
     && apt -yqq install git curl nginx \
