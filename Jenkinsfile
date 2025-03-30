@@ -10,7 +10,7 @@ pipeline {
         DOCKER_IMAGE_NAME = "def1s/uniconf-backend"
         DOCKER_REGISTRY = "https://registry.hub.docker.com"
         DOCKER_CREDENTIALS_ID = "docker-def1s"
-        DEV_SERVER_IP = "176.114.90.241"
+        DEV_SERVER_IP = "194.58.114.10"
         DEPLOY_SCRIPT_PATH = "/root/uniconf-orchestration/deploy.sh"
     }
 
@@ -59,7 +59,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                sshagent(['jenkins-test_ssh']) {
+                sshagent(['uniconf_dev_ssh']) {
                      sh "ssh root@${DEV_SERVER_IP} \"${DEPLOY_SCRIPT_PATH}\""
                 }
             }
