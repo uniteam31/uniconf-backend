@@ -59,7 +59,7 @@ pipeline {
                 branch 'dev'
             }
             steps {
-                sshagent(['jenkins-test_ssh']) {
+                sshagent(['uniconf_dev_ssh']) {
                      sh "ssh root@${DEV_SERVER_IP} \"${DEPLOY_SCRIPT_PATH}\""
                 }
             }
