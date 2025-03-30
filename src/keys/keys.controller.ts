@@ -14,8 +14,8 @@ import { KeysService } from './keys.service';
 import { CreateKeyDto } from './dto/create-key-dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IAuthenticatedRequest } from '../auth/types/authenticated-request.interface';
-import { Types } from 'mongoose';
 import { UpdateKeyDto } from './dto/update-key-dto';
+import { Types } from 'mongoose';
 
 @UseGuards(JwtAuthGuard)
 @Controller('keys')
@@ -34,26 +34,26 @@ export class KeysController {
 		return this.keysService.getKeys(searchQuery);
 	}
 
-	@Get(':id')
-	getKey(@Param('id') keyId: Types.ObjectId, @Request() req: IAuthenticatedRequest) {
-		return this.keysService.getKey(keyId);
+	@Get(':name')
+	getKey(@Param('name') keyName: string, @Request() req: IAuthenticatedRequest) {
+		return this.keysService.getKey(keyName);
 	}
 
-	@Put(':id')
+	@Put(':name')
 	updateKey(
-		@Param('id') keyId: Types.ObjectId,
+		@Param('name') name: string,
 		@Body() updateKeyDto: UpdateKeyDto,
 		@Request() req: IAuthenticatedRequest,
 	) {
 		const ownerId = req.user._id;
 
-		return this.keysService.updateKey(keyId, ownerId, updateKeyDto);
+		return this.keysService.updateKey(name, ownerId, updateKeyDto);
 	}
 
-	@Delete(':id')
-	deleteSpaceNote(@Param('id') keyId: Types.ObjectId, @Request() req: IAuthenticatedRequest) {
+	@Delete(':name')
+	deleteSpaceNote(@Param('name') name: string, @Request() req: IAuthenticatedRequest) {
 		const ownerId = req.user._id;
 
-		return this.keysService.deleteKey(keyId, ownerId);
+		return this.keysService.deleteKey(name, ownerId);
 	}
 }

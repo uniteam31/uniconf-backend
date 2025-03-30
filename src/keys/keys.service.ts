@@ -16,13 +16,13 @@ export class KeysService {
 
 		const nextNumber = lastKey?.number ? lastKey.number + 1 : 1;
 
-		const createdKey = new this.keyModel({
+		const createdKey = await new this.keyModel({
 			...createKeyDto,
 			owner,
 			number: nextNumber,
-		});
+		}).save();
 
-		return formatResponse<Key>(await createdKey.save(), 'Ключ успешно создан');
+		return formatResponse<Key>(createdKey, 'Ключ успешно создан');
 	}
 
 	async getKeys(searchQuery?: string): Promise<ApiResponse<Key[]>> {
@@ -49,9 +49,9 @@ export class KeysService {
 		return formatResponse<Key[]>(keys, '');
 	}
 
-	async getKey(id: Types.ObjectId): Promise<ApiResponse<Key>> {
+	async getKey(name: string): Promise<ApiResponse<Key>> {
 		const key = await this.keyModel
-			.findById(id)
+			.findOne({ name })
 			.populate({
 				path: 'owner',
 				select: '_id username publicName',
@@ -63,15 +63,17 @@ export class KeysService {
 	}
 
 	async updateKey(
-		keyId: Types.ObjectId,
-		ownerId: Types.ObjectId,
+		name: string,
+		owner: Types.ObjectId,
 		updateKeyDto: UpdateKeyDto,
 	): Promise<ApiResponse<Key>> {
-		const updatedKey = await this.keyModel.findOneAndUpdate(
-			{ _id: keyId, ownerId },
-			{ $set: { ...updateKeyDto } },
-			{ new: true },
-		);
+		const updatedKey = await this.keyModel
+			.findOneAndUpdate({ name, owner }, { $set: { ...updateKeyDto } }, { new: true })
+			.populate({
+				path: 'owner',
+				select: '_id username publicName',
+				model: 'User',
+			});
 
 		if (!updatedKey) {
 			throw new NotFoundException('Ключ не найден или у вас нет прав для его редактирования');
@@ -80,10 +82,10 @@ export class KeysService {
 		return formatResponse<Key>(updatedKey, 'Ключ успешно обновлен');
 	}
 
-	async deleteKey(keyId: Types.ObjectId, ownerId: Types.ObjectId): Promise<ApiResponse<null>> {
+	async deleteKey(name: string, owner: Types.ObjectId): Promise<ApiResponse<null>> {
 		const deletedKey = await this.keyModel.findOneAndDelete({
-			_id: keyId,
-			ownerId,
+			name,
+			owner,
 		});
 
 		if (!deletedKey) {
