@@ -21,7 +21,8 @@ export class AuthController {
 		return this.authService.login(userDto);
 	}
 
-	@UseGuards(JwtAuthGuard)
+	// TODO: remove comm
+	// @UseGuards(JwtAuthGuard)
 	@Post('/signup')
 	registration(@Body() userDto: CreateUserDto) {
 		return this.authService.registration(userDto);
